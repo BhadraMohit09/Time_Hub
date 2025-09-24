@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Hub</title>
     <link id="favicon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E
-<circle cx='50' cy='50' r='45' stroke='%23000' stroke-width='8' fill='none'/>
-<line x1='50' y1='50' x2='50' y2='30' stroke='%23fff' stroke-width='5' stroke-linecap='round'/>
-<line x1='50' y1='50' x2='75' y2='50' stroke='%23fff' stroke-width='5' stroke-linecap='round'/>
-<path d='M50 50 A35 35 0 0 1 80 50' stroke='%23ff0000' stroke-width='4' fill='none' stroke-linecap='round'/>
-</svg>">
-
+    <defs>
+    <linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'>
+        <stop offset='0%' style='stop-color:%234facfe;stop-opacity:1'/>
+        <stop offset='100%' style='stop-color:%2300f2fe;stop-opacity:1'/>
+    </linearGradient>
+    </defs>
+    <circle cx='50' cy='50' r='45' stroke='url(%23grad)' stroke-width='8' fill='none'/>
+    <line x1='50' y1='50' x2='50' y2='25' stroke='%23fff' stroke-width='6' stroke-linecap='round'/>
+    <line x1='50' y1='50' x2='70' y2='50' stroke='%23fff' stroke-width='6' stroke-linecap='round'/>
+    <circle cx='50' cy='50' r='3' fill='%23ff0000'/>
+    </svg>">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -452,42 +457,11 @@
                 });
             });
 
-            // --- Dynamic Favicon ---
-            function updateFavicon() {
-                const favicon = document.getElementById('favicon');
-                const now = new Date();
-                const seconds = now.getSeconds();
-                const minutes = now.getMinutes();
-                const hours = now.getHours();
-
-                const secondAngle = seconds * 6;
-                const minuteAngle = (minutes * 6) + (seconds * 0.1);
-                const hourAngle = ((hours % 12) * 30) + (minutes * 0.5);
-
-                const svg = `
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-            <defs>
-                <linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='100%'>
-                    <stop offset='0%' style='stop-color:%234facfe;stop-opacity:1' />
-                    <stop offset='100%' style='stop-color:%2300f2fe;stop-opacity:1' />
-                </linearGradient>
-            </defs>
-            <circle cx='50' cy='50' r='48' fill='%23dbeafe'/>
-            <circle cx='50' cy='50' r='45' stroke='url(%23grad1)' stroke-width='8' fill='none'/>
-            <line x1='50' y1='50' x2='50' y2='25' stroke='%233b82f6' stroke-width='6' stroke-linecap='round' transform='rotate(${hourAngle} 50 50)'/>
-            <line x1='50' y1='50' x2='50' y2='15' stroke='%234facfe' stroke-width='4' stroke-linecap='round' transform='rotate(${minuteAngle} 50 50)'/>
-            <line x1='50' y1='50' x2='50' y2='10' stroke='red' stroke-width='2' stroke-linecap='round' transform='rotate(${secondAngle} 50 50)'/>
-            <circle cx='50' cy='50' r='3' fill='%233b82f6'/>
-        </svg>`;
-
-                favicon.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
-            }
-
             // --- World Clock Logic ---
             const clocksContainer = document.getElementById('clocks-container');
             const citySelect = document.getElementById('city-select');
 
-            const timezones = { "Current Location": Intl.DateTimeFormat().resolvedOptions().timeZone, "New York": "America/New_York", "London": "Europe/London", "Tokyo": "Asia/Tokyo", "Sydney": "Australia/Sydney", "Dubai": "Asia/Dubai", "Paris": "Europe/Paris", "Los Angeles": "America/Los_Angeles", "Shanghai": "Asia/Shanghai", "Kolkata": "Asia/Kolkata" };
+            const timezones = { "Current Location": Intl.DateTimeFormat().resolvedOptions().timeZone, "Jamnagar": "Asia/Kolkata", "New York": "America/New_York", "London": "Europe/London", "Tokyo": "Asia/Tokyo", "Sydney": "Australia/Sydney", "Dubai": "Asia/Dubai", "Paris": "Europe/Paris", "Los Angeles": "America/Los_Angeles", "Shanghai": "Asia/Shanghai" };
 
             let displayedClocks = JSON.parse(localStorage.getItem('displayedClocks')) || ["Current Location"];
 
@@ -805,7 +779,6 @@
             });
 
             function checkAlarms() {
-                updateFavicon(); // Update favicon every second
                 const now = new Date();
                 const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
@@ -831,7 +804,6 @@
             }
 
             renderAlarms();
-            updateFavicon(); // Initial call
             setInterval(checkAlarms, 1000);
         });
 
